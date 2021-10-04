@@ -6,6 +6,7 @@ import React, {
   useContext,
 } from 'react';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const FirebaseContext = createContext();
 
@@ -33,16 +34,20 @@ const FirebaseProvider = ({children}) => {
   }, []);
 
   // add additional information
-  const register = async (email, password) => {
+  const register = async (email, password, name = 'test') => {
     try {
       const creds = await auth().createUserWithEmailAndPassword(
         email,
         password,
       );
-
-      console.log('register creds');
       console.log(creds);
       console.log('User account created & signed in!');
+
+      // update the authentication profile
+      await auth().currentUser.updateProfile({displayName: 'Mugilan'});
+
+      // create a document in firestore
+      await firestore().collection('Users').doc(email).set({username: name});
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         console.log('That email address is already in use!');
@@ -59,12 +64,13 @@ const FirebaseProvider = ({children}) => {
   const login = async (email, password) => {
     try {
       const creds = await auth().signInWithEmailAndPassword(email, password);
-
-      console.log('login creds');
       console.log(creds);
       console.log('User signed in!');
     } catch (error) {
       // TODO: add error codes
+      if (error.code === 'auth/user-not-found') {
+        console.log('user not found');
+      }
 
       console.error(error);
     }
