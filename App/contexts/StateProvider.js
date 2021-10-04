@@ -1,6 +1,7 @@
 import React, {cloneElement} from 'react';
 
-import ThemeProvider, {useTheme} from './ThemeProvider';
+import ThemeProvider from './ThemeProvider';
+import FirebaseProvider from './FirebaseProvider';
 
 const ProviderComposer = ({contexts, children}) => {
   return contexts.reduceRight(
@@ -11,11 +12,10 @@ const ProviderComposer = ({contexts, children}) => {
 
 const StateProvider = ({children}) => {
   return (
-    <ProviderComposer contexts={[<ThemeProvider />]}>
+    <ProviderComposer contexts={[<ThemeProvider />, <FirebaseProvider />]}>
       {children}
     </ProviderComposer>
   );
 };
 
-export {useTheme};
 export default StateProvider;

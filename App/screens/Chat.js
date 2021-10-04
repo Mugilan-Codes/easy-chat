@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {TouchableOpacity} from 'react-native';
+import {useFirebase} from '../contexts';
 
 const StyledView = styled(SafeAreaView)`
   flex: 1;
@@ -14,9 +16,14 @@ const StyledText = styled.Text`
 `;
 
 const ChatScreen = () => {
+  const {logout} = useFirebase();
+
   return (
     <StyledView>
       <StyledText>Chat Screen</StyledText>
+      <TouchableOpacity onPress={logout}>
+        <StyledText>LOGUT</StyledText>
+      </TouchableOpacity>
     </StyledView>
   );
 };
