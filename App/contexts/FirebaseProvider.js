@@ -16,7 +16,7 @@ const FirebaseProvider = ({children}) => {
   const [user, setUser] = useState();
 
   console.log(`isLoading = ${isLoading}`);
-  console.log(`user = ${user}`);
+  console.log(user);
 
   // Handle user state changes
   const onAuthStateChanged = user => {
@@ -32,6 +32,7 @@ const FirebaseProvider = ({children}) => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
+  // add additional information
   const register = async (email, password) => {
     try {
       const creds = await auth().createUserWithEmailAndPassword(

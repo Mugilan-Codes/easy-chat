@@ -6,12 +6,19 @@ import ChatScreen from '../screens/chat';
 import LoginScreen from '../screens/login';
 import RegisterScreen from '../screens/register';
 import {useTheme, useFirebase} from '../contexts';
+import Loading from '../components/loading';
 
 const Stack = createNativeStackNavigator();
 
 const RootNav = () => {
-  const {user} = useFirebase();
+  const {user, isLoading} = useFirebase();
   const {theme} = useTheme();
+
+  if (isLoading) {
+    console.log('Loading...');
+    // TODO: add a splash screen
+    return <Loading />;
+  }
 
   return (
     <NavigationContainer theme={theme}>
