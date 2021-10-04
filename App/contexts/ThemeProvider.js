@@ -27,9 +27,9 @@ const ThemeProvider = ({children}) => {
   };
 
   useEffect(() => {
-    Appearance.addChangeListener(onThemeChange);
+    const subscription = Appearance.addChangeListener(onThemeChange);
 
-    return () => Appearance.removeChangeListener(onThemeChange);
+    return subscription;
   }, []);
 
   const value = useMemo(
