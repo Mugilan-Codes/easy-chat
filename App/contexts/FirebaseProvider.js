@@ -8,6 +8,8 @@ import React, {
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
+// FIXME: rename 'Firebase' to 'Auth'
+
 const FirebaseContext = createContext();
 
 const FirebaseProvider = ({children}) => {
@@ -34,7 +36,7 @@ const FirebaseProvider = ({children}) => {
   }, []);
 
   // add additional information
-  const register = async (email, password, name = 'test') => {
+  const register = async (email, password, name) => {
     try {
       const creds = await auth().createUserWithEmailAndPassword(
         email,
@@ -44,7 +46,7 @@ const FirebaseProvider = ({children}) => {
       console.log('User account created & signed in!');
 
       // update the authentication profile
-      await auth().currentUser.updateProfile({displayName: 'Mugilan'});
+      await auth().currentUser.updateProfile({displayName: name});
 
       // create a document in firestore
       await firestore().collection('Users').doc(email).set({username: name});
@@ -67,7 +69,6 @@ const FirebaseProvider = ({children}) => {
       console.log(creds);
       console.log('User signed in!');
     } catch (error) {
-      // TODO: add error codes
       if (error.code === 'auth/user-not-found') {
         console.log('user not found');
       }

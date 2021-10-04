@@ -2,6 +2,10 @@ import {
   DefaultTheme as NavigationDefaultTheme,
   DarkTheme as NavigationDarkTheme,
 } from '@react-navigation/native';
+import {
+  DefaultTheme as PaperDefaultTheme,
+  DarkTheme as PaperDarkTheme,
+} from 'react-native-paper';
 import merge from 'deepmerge';
 
 const customCommonTheme = {
@@ -23,11 +27,13 @@ const customDarkTheme = {
 };
 
 const CombinedDefaultTheme = merge.all([
+  PaperDefaultTheme,
   NavigationDefaultTheme,
   customCommonTheme,
   customLightTheme,
 ]);
 const CombinedDarkTheme = merge.all([
+  PaperDarkTheme,
   NavigationDarkTheme,
   customCommonTheme,
   customDarkTheme,

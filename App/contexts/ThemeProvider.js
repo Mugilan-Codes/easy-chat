@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import {Appearance} from 'react-native';
 import {ThemeProvider as StyledProvider} from 'styled-components/native';
+import {Provider as PaperProvider} from 'react-native-paper';
 
 import {DarkTheme, LightTheme} from '../styles/theme';
 
@@ -42,7 +43,9 @@ const ThemeProvider = ({children}) => {
 
   return (
     <ThemeContext.Provider value={value}>
-      <StyledProvider theme={theme}>{children}</StyledProvider>
+      <PaperProvider theme={theme}>
+        <StyledProvider theme={theme}>{children}</StyledProvider>
+      </PaperProvider>
     </ThemeContext.Provider>
   );
 };

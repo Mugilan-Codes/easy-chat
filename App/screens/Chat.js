@@ -16,11 +16,11 @@ const StyledText = styled.Text`
 `;
 
 const ChatScreen = () => {
-  const {logout} = useFirebase();
+  const {user, logout} = useFirebase();
 
   return (
     <StyledView>
-      <StyledText>Chat Screen</StyledText>
+      <StyledText>Chat Screen {user?.displayName}</StyledText>
       <TouchableOpacity onPress={logout}>
         <StyledText>LOGUT</StyledText>
       </TouchableOpacity>
