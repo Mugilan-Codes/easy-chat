@@ -16,13 +16,13 @@ const customCommonTheme = {
 const customLightTheme = {
   colors: {
     primary: '#000000',
-    background: '#FFFFFF',
+    // background: '#FFFFFF',
   },
 };
 const customDarkTheme = {
   colors: {
     primary: '#FFFFFF',
-    background: '#000000',
+    // background: '#000000',
   },
 };
 

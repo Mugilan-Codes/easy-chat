@@ -31,7 +31,7 @@ const ThemeProvider = ({children}) => {
     const subscription = Appearance.addChangeListener(onThemeChange);
 
     return subscription;
-  }, []);
+  }, [onThemeChange]);
 
   const value = useMemo(
     () => ({
