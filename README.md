@@ -15,3 +15,4 @@
 - [ ] Real-Time Chat rooms
 - [ ] Display Error Message Properly
 - [ ] UI
+- Remove header from auth screens
