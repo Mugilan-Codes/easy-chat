@@ -91,7 +91,6 @@ const LoginScreen = ({navigation}) => {
                     placeholder="john.doe@gmail.com"
                     error={!!error}
                     style={{
-                      // backgroundColor: 'rgb(58, 58, 60)',
                       borderRadius: 8,
                       paddingHorizontal: 16,
                     }}
@@ -110,7 +109,10 @@ const LoginScreen = ({navigation}) => {
                 rules={{
                   maxLength: 100,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({
+                  field: {onChange, onBlur, value},
+                  fieldState: {error},
+                }) => (
                   <TextInput
                     onBlur={onBlur}
                     onChangeText={onChange}
@@ -124,8 +126,8 @@ const LoginScreen = ({navigation}) => {
                     onSubmitEditing={handleOnSubmit}
                     label="Password"
                     right={<TextInput.Icon name="eye" />}
+                    error={!!error}
                     style={{
-                      // backgroundColor: 'rgb(58, 58, 60)',
                       borderRadius: 8,
                       paddingHorizontal: 16,
                     }}

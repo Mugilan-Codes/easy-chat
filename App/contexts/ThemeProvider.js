@@ -30,7 +30,7 @@ const ThemeProvider = ({children}) => {
   useEffect(() => {
     const subscription = Appearance.addChangeListener(onThemeChange);
 
-    return subscription;
+    return () => subscription;
   }, [onThemeChange]);
 
   const value = useMemo(
