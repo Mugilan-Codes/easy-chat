@@ -3,10 +3,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import ChatScreen from '../screens/chat';
-import LoginScreen from '../screens/login';
-import RegisterScreen from '../screens/register';
 import {useTheme, useFirebase} from '../contexts';
 import Loading from '../components/loading';
+import AuthNav from './AuthNav';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,18 +21,13 @@ const RootNav = () => {
 
   return (
     <NavigationContainer theme={theme}>
-      <Stack.Navigator>
-        {user ? (
-          <>
-            <Stack.Screen name="Chat" component={ChatScreen} />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
-          </>
-        )}
-      </Stack.Navigator>
+      {user ? (
+        <Stack.Navigator>
+          <Stack.Screen name="Chat" component={ChatScreen} />
+        </Stack.Navigator>
+      ) : (
+        <AuthNav />
+      )}
     </NavigationContainer>
   );
 };
