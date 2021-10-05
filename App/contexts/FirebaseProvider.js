@@ -48,7 +48,7 @@ const FirebaseProvider = ({children}) => {
       // update the authentication profile
       await auth().currentUser.updateProfile({displayName: name});
 
-      // create a document in firestore
+      // create a document in firestore (use add instead of doc().set())
       await firestore().collection('Users').doc(email).set({username: name});
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
