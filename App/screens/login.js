@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
   Text,
   TouchableOpacity,
   Button,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
+  View,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import styled from 'styled-components/native';
@@ -31,6 +33,9 @@ const Content = styled(KeyboardAvoidingView)`
 const LoginScreen = ({navigation}) => {
   const {login} = useFirebase();
 
+  const emailInput = useRef(null);
+  const passwordInput = useRef(null);
+
   const {
     control,
     handleSubmit,
@@ -42,68 +47,80 @@ const LoginScreen = ({navigation}) => {
     login(data.email, data.password);
   };
 
+  const handleOnSubmit = handleSubmit(onSubmit);
+
   return (
     <Container>
       <ViewAreaSafe>
         <Content behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({
-              field: {onChange, onBlur, value},
-              fieldState: {error},
-            }) => (
-              <TextInput
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                autoCapitalize="none"
-                autoCompleteType="email"
-                autoCorrect={false}
-                keyboardType="email-address"
-                returnKeyType="next"
-                label="E-Mail"
-                placeholder="john.doe@gmail.com"
-                error={!!error}
-              />
-            )}
-            name="email"
-            defaultValue=""
-          />
+          <Pressable onPress={() => emailInput.current?.focus()}>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({
+                field: {onChange, onBlur, value},
+                fieldState: {error},
+              }) => (
+                <TextInput
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  autoCapitalize="none"
+                  autoCompleteType="email"
+                  autoCorrect={false}
+                  keyboardType="email-address"
+                  ref={emailInput}
+                  returnKeyType="next"
+                  onSubmitEditing={() => passwordInput.current?.focus()}
+                  label="E-Mail"
+                  placeholder="john.doe@gmail.com"
+                  error={!!error}
+                />
+              )}
+              name="email"
+              defaultValue=""
+            />
+          </Pressable>
 
-          <Controller
-            control={control}
-            rules={{
-              maxLength: 100,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                autoCapitalize="none"
-                autoCompleteType="password"
-                autoCorrect={false}
-                secureTextEntry
-                returnKeyType="done"
-                label="Password"
-                right={<TextInput.Icon name="eye" />}
-              />
-            )}
-            name="password"
-            defaultValue=""
-          />
+          <Pressable onPress={() => passwordInput.current?.focus()}>
+            <Controller
+              control={control}
+              rules={{
+                maxLength: 100,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  autoCapitalize="none"
+                  autoCompleteType="password"
+                  autoCorrect={false}
+                  secureTextEntry
+                  ref={passwordInput}
+                  returnKeyType="done"
+                  onSubmitEditing={handleOnSubmit}
+                  label="Password"
+                  right={<TextInput.Icon name="eye" />}
+                />
+              )}
+              name="password"
+              defaultValue=""
+            />
+          </Pressable>
 
-          <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+          <Button title="Submit" onPress={handleOnSubmit} />
 
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Register');
-            }}>
-            <Text>Go To Register Screen</Text>
-          </TouchableOpacity>
+          <View style={{alignItems: 'flex-end'}}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Register');
+              }}>
+              <Text>Go To Register Screen</Text>
+            </TouchableOpacity>
+          </View>
         </Content>
       </ViewAreaSafe>
     </Container>
