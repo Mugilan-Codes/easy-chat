@@ -3,7 +3,6 @@ import {
   Text,
   TouchableOpacity,
   Button,
-  KeyboardAvoidingView,
   Platform,
   Pressable,
   View,
@@ -11,25 +10,15 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
-import styled from 'styled-components/native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {TextInput, Title, Subheading} from 'react-native-paper';
 
 import {useFirebase} from '../contexts';
 import SizedBox from '../components/SizedBox';
-
-const Container = styled.View`
-  background-color: ${props => props.theme.colors.background};
-  flex: 1;
-`;
-const ViewAreaSafe = styled(SafeAreaView)`
-  flex: 1;
-`;
-const Content = styled(KeyboardAvoidingView)`
-  flex: 1;
-  justify-content: center;
-  padding: 32px 16px;
-`;
+import {
+  Container,
+  ViewAreaSafe,
+  ViewAvoidingKeyboard,
+} from '../components/Styled';
 
 // TODO: Display error messages
 const LoginScreen = ({navigation}) => {
@@ -55,7 +44,8 @@ const LoginScreen = ({navigation}) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Container>
         <ViewAreaSafe>
-          <Content behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <ViewAvoidingKeyboard
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <Title style={{fontSize: 28, fontWeight: '700', lineHeight: 34}}>
               Welcome Back!
             </Title>
@@ -158,7 +148,7 @@ const LoginScreen = ({navigation}) => {
                 <Text>Go To Register Screen</Text>
               </TouchableOpacity>
             </View>
-          </Content>
+          </ViewAvoidingKeyboard>
         </ViewAreaSafe>
       </Container>
     </TouchableWithoutFeedback>

@@ -22,7 +22,7 @@ const customLightTheme = {
 const customDarkTheme = {
   colors: {
     primary: '#FFFFFF',
-    // background: '#000000',
+    background: '#333333',
   },
 };
 
