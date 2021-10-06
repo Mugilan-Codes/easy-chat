@@ -18,9 +18,6 @@ const FirebaseProvider = ({children}) => {
 
   const [user, setUser] = useState();
 
-  console.log(`isLoading = ${isLoading}`);
-  console.log(user);
-
   // Handle user state changes
   const onAuthStateChanged = user => {
     setUser(user);
@@ -32,7 +29,7 @@ const FirebaseProvider = ({children}) => {
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
 
-    return subscriber; // unsubscribe on unmount
+    return () => subscriber; // unsubscribe on unmount
   }, []);
 
   // add additional information
@@ -43,13 +40,21 @@ const FirebaseProvider = ({children}) => {
         password,
       );
       console.log(creds);
-      console.log('User account created & signed in!');
 
       // update the authentication profile
-      await auth().currentUser.updateProfile({displayName: name});
+      await auth().currentUser.updateProfile({
+        displayName: name,
+        photoURL: 'https://placeimg.com/140/140/any',
+      });
 
       // create a document in firestore (use add instead of doc().set())
-      await firestore().collection('Users').doc(email).set({username: name});
+      await firestore().collection('Users').doc(email).set({
+        username: name,
+        email,
+        avatar: 'https://placeimg.com/140/140/any',
+        created_on: firestore.FieldValue.serverTimestamp(),
+        updated_on: firestore.FieldValue.serverTimestamp(),
+      });
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         console.log('That email address is already in use!');
@@ -67,7 +72,6 @@ const FirebaseProvider = ({children}) => {
     try {
       const creds = await auth().signInWithEmailAndPassword(email, password);
       console.log(creds);
-      console.log('User signed in!');
     } catch (error) {
       if (error.code === 'auth/user-not-found') {
         console.log('user not found');
