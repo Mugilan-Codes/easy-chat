@@ -34,7 +34,7 @@ const LoginScreen = ({navigation}) => {
   } = useForm();
 
   const onSubmit = data => {
-    console.log({email: data.email, password: data.password});
+    // console.log({email: data.email, password: data.password});
     login(data.email, data.password);
   };
 

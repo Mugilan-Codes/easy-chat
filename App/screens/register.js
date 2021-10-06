@@ -40,12 +40,12 @@ const RegisterScreen = ({navigation}) => {
   const cPassInput = useRef(null);
 
   const onSubmit = data => {
-    console.log(data);
-    console.log({
-      email: data.email,
-      password: data.password,
-      name: data.username,
-    });
+    // console.log(data);
+    // console.log({
+    //   email: data.email,
+    //   password: data.password,
+    //   name: data.username,
+    // });
     register(data.email, data.password, data.username);
   };
 
