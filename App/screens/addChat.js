@@ -3,16 +3,19 @@ import {
   ActivityIndicator,
   FlatList,
   View,
-  Text,
   TouchableOpacity,
 } from 'react-native';
-import {Searchbar} from 'react-native-paper';
+import {Searchbar, Avatar, Card} from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
+
+import {useFirebase} from '../contexts';
 
 // TODO: create a document in chat collection
 // TODO: refer the chat document id to both the users involved and also who the chat is with.
 // TODO: move to the chat screen of the current user
 const AddChatScreen = ({navigation}) => {
+  const {user} = useFirebase();
+
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
   const [data, setData] = useState([]);
@@ -35,7 +38,7 @@ const AddChatScreen = ({navigation}) => {
     const subscriber = firestore()
       .collection('Users')
       .onSnapshot(querySnapshot => {
-        const users = [];
+        let users = [];
 
         querySnapshot.forEach(documentSnapshot => {
           users.push({
@@ -44,6 +47,8 @@ const AddChatScreen = ({navigation}) => {
           });
         });
 
+        users = users.filter(item => item.email !== user.email);
+
         setUsers(users);
         setData(users);
         setLoading(false);
@@ -51,6 +56,42 @@ const AddChatScreen = ({navigation}) => {
 
     return () => subscriber();
   }, []);
+
+  const createChatId = (emailOne, emailTwo) => {
+    const chatIdArr = [];
+    chatIdArr.push(emailOne.split('@')[0]);
+    chatIdArr.push(emailTwo.split('@')[0]);
+    chatIdArr.sort();
+    return chatIdArr.join('_');
+  };
+
+  const addToFirestore = async (email, name) => {
+    const chatId = createChatId(user.email, email);
+
+    await firestore()
+      .collection('Users')
+      .doc(email)
+      .update({
+        chats: firestore.FieldValue.arrayUnion({
+          chatId,
+          email: user.email,
+          name: user.displayName,
+        }),
+      });
+
+    await firestore()
+      .collection('Users')
+      .doc(user.email)
+      .update({
+        chats: firestore.FieldValue.arrayUnion({
+          chatId,
+          email,
+          name,
+        }),
+      });
+
+    navigation.replace('Chat', {chatId, email, name});
+  };
 
   if (loading) {
     return <ActivityIndicator />;
@@ -67,17 +108,15 @@ const AddChatScreen = ({navigation}) => {
       <FlatList
         data={data}
         renderItem={({item}) => (
-          <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
-            <View
-              style={{
-                height: 50,
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Text>User ID: {item.key}</Text>
-              <Text>User Name: {item.username}</Text>
-            </View>
+          <TouchableOpacity
+            onPress={() => addToFirestore(item.key, item.username)}>
+            <Card.Title
+              title={item.username}
+              subtitle={item.email}
+              left={props => (
+                <Avatar.Image {...props} source={{uri: item.avatar}} />
+              )}
+            />
           </TouchableOpacity>
         )}
       />
