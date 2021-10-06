@@ -1,26 +1,48 @@
-import React, {useState, useLayoutEffect} from 'react';
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
-import {IconButton} from 'react-native-paper';
+import React, {useLayoutEffect, useEffect, useState} from 'react';
+import {View, FlatList, TouchableOpacity} from 'react-native';
+import {IconButton, Avatar, Card} from 'react-native-paper';
+import firestore from '@react-native-firebase/firestore';
 
-// TODO: Add Logout Button
+import {useFirebase} from '../contexts';
+
+// TODO: display the image of the other user
+// TODO: display bit of latest message
+// TODO: Show lates messages on top
 const HomeScreen = ({navigation}) => {
-  // TODO: retrieve chats of the current user
-  const DATA = [
-    {id: 1, name: 'user1'},
-    {id: 2, name: 'user2'},
-    {id: 3, name: 'user3'},
-    {id: 4, name: 'user4'},
-    {id: 5, name: 'user5'},
-  ];
+  const [data, setData] = useState([]);
+  const {logout, user} = useFirebase();
+
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('Users')
+      .doc(user.email)
+      .onSnapshot(docSnap => {
+        console.log('User Data: ', docSnap.data());
+        setData(docSnap.data().chats);
+      });
+
+    return () => subscriber();
+  }, []);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <IconButton icon="logout" onPress={logout} />,
+    });
+  }, [navigation]);
 
   return (
     <View style={{flex: 1}}>
       <FlatList
-        data={DATA}
+        data={data}
         renderItem={({item}) => (
-          <View>
-            <Text>{item.name}</Text>
-          </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Chat', {chatId: item.chatId})}>
+            <Card.Title
+              title={item.name}
+              subtitle={item.email}
+              left={props => <Avatar.Icon {...props} icon="folder" />}
+            />
+          </TouchableOpacity>
         )}
       />
 
