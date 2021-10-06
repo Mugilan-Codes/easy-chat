@@ -4,7 +4,6 @@ import firestore from '@react-native-firebase/firestore';
 
 import {useFirebase} from '../contexts';
 
-// TODO: Modify Header to display the chat name
 // TODO: Read the avatar from the collections since auth one does not load on the first chance
 const ChatScreen = ({route}) => {
   const [messages, setMessages] = useState([]);

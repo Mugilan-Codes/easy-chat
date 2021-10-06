@@ -36,11 +36,17 @@ const HomeScreen = ({navigation}) => {
         data={data}
         renderItem={({item}) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('Chat', {chatId: item.chatId})}>
+            onPress={() =>
+              navigation.navigate('Chat', {
+                chatId: item.chatId,
+                email: item.email,
+                name: item.name,
+              })
+            }>
             <Card.Title
               title={item.name}
               subtitle={item.email}
-              left={props => <Avatar.Icon {...props} icon="folder" />}
+              left={props => <Avatar.Icon {...props} icon="account" />}
             />
           </TouchableOpacity>
         )}
