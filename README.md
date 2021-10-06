@@ -4,15 +4,19 @@
 
 ### TODO
 
-- [ ] Firebase Authentication
+- Firebase Authentication
   - [X] Sign-In
   - [X] Sign-Up
-  - [ ] Search User
+  - [X] Search User
   - [ ] Forgot Password
-- [ ] Chat Screen
+- [X] Chat Screen
 - [ ] Use Icons (Widgets)
-- [ ] Conversation Screen (Real-Time Chats)
-- [ ] Real-Time Chat rooms
+- [X] Conversation Screen (Real-Time Chats)
+- [X] Real-Time Chat rooms
 - [ ] Display Error Message Properly
-- [ ] UI
 - Remove header from auth screens
+
+#### Remove Warnings
+
+- [Animated.event now requires a second argument for options](https://github.com/FaridSafi/react-native-gifted-chat/issues/1924#issuecomment-867599040) - react-native-gifted-chat
+- [Keyboard remove listener error](https://github.com/FaridSafi/react-native-gifted-chat/issues/2090#issuecomment-901812607). [location of file](https://github.com/FaridSafi/react-native-gifted-chat/issues/2094#issuecomment-913413421) - react-native-gifted-chat
