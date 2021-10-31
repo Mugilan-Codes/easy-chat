@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
-import {TextInput, Title, Subheading} from 'react-native-paper';
+import {TextInput, Subheading} from 'react-native-paper';
 
 import {useFirebase} from '../contexts';
 import SizedBox from '../components/SizedBox';
@@ -18,6 +18,7 @@ import {
   Container,
   ViewAreaSafe,
   ViewAvoidingKeyboard,
+  AuthTitle,
 } from '../components/Styled';
 
 // TODO: display errors
@@ -40,12 +41,6 @@ const RegisterScreen = ({navigation}) => {
   const cPassInput = useRef(null);
 
   const onSubmit = data => {
-    // console.log(data);
-    // console.log({
-    //   email: data.email,
-    //   password: data.password,
-    //   name: data.username,
-    // });
     register(data.email, data.password, data.username);
   };
 
@@ -57,9 +52,7 @@ const RegisterScreen = ({navigation}) => {
         <ViewAreaSafe>
           <ViewAvoidingKeyboard
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            <Title style={{fontSize: 28, fontWeight: '700', lineHeight: 34}}>
-              Create Account
-            </Title>
+            <AuthTitle>Create Account</AuthTitle>
 
             <SizedBox height={8} />
 

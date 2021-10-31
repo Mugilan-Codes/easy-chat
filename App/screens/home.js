@@ -8,6 +8,7 @@ import {useFirebase} from '../contexts';
 // TODO: display the image of the other user
 // TODO: display bit of latest message
 // TODO: Show lates messages on top
+// FIXME: handle empty chat array for new users
 const HomeScreen = ({navigation}) => {
   const [data, setData] = useState([]);
   const {logout, user} = useFirebase();
@@ -18,7 +19,9 @@ const HomeScreen = ({navigation}) => {
       .doc(user.email)
       .onSnapshot(docSnap => {
         console.log('User Data: ', docSnap.data());
-        setData(docSnap.data().chats);
+        if (docSnap.data().chats) {
+          setData(docSnap.data().chats);
+        }
       });
 
     return () => subscriber();

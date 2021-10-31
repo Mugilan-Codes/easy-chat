@@ -10,7 +10,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
-import {TextInput, Title, Subheading} from 'react-native-paper';
+import {TextInput, Subheading} from 'react-native-paper';
 
 import {useFirebase} from '../contexts';
 import SizedBox from '../components/SizedBox';
@@ -18,6 +18,7 @@ import {
   Container,
   ViewAreaSafe,
   ViewAvoidingKeyboard,
+  AuthTitle,
 } from '../components/Styled';
 
 // TODO: Display error messages
@@ -34,7 +35,6 @@ const LoginScreen = ({navigation}) => {
   } = useForm();
 
   const onSubmit = data => {
-    // console.log({email: data.email, password: data.password});
     login(data.email, data.password);
   };
 
@@ -46,9 +46,7 @@ const LoginScreen = ({navigation}) => {
         <ViewAreaSafe>
           <ViewAvoidingKeyboard
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            <Title style={{fontSize: 28, fontWeight: '700', lineHeight: 34}}>
-              Welcome Back!
-            </Title>
+            <AuthTitle>Welcome Back!</AuthTitle>
 
             <SizedBox height={8} />
 
